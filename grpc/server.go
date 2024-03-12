@@ -11,12 +11,12 @@ import (
 	"net"
 )
 
-func RegisterGRPC(port int, address, serviceName string, tagsType []string, fuc func(r *grpc.Server)) error {
+func RegisterGRPC(port int, serviceName string, fuc func(r *grpc.Server)) error {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%v", port))
 	if err != nil {
 		return err
 	}
-	err = consul.RegisterConsul(port, address, serviceName, tagsType) //todo:服务注册
+	err = consul.RegisterConsul(port, serviceName) //todo:服务注册
 	if err != nil {
 		return err
 	}
