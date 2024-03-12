@@ -20,6 +20,6 @@ func Init(viperPath string, types ...string) error {
 			err = mysql_.AutoMigrateUser() //todo:自动迁移
 		}
 	}
-	err = nacos_listen.NacosListen() //todo:动态监听 nacos 配置
+	err = nacos_listen.NacosListen(viperPath) //todo:动态监听 nacos 配置
 	return err
 }
