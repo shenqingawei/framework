@@ -5,6 +5,6 @@ import (
 )
 
 func InitViper(path string) error {
-	viper.SetConfigFile(path)
+	viper.AddConfigPath(path)
 	return viper.ReadInConfig()
 }
