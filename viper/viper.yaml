@@ -1,5 +1,0 @@
-NacosConfig:
-  Host:  10.2.171.8
-  Port:  8848
-  Name:  user
-  Group: DEFAULT_GROUP

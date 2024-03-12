@@ -6,12 +6,20 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/clients/config_client"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
-	"github.com/shenqingawei/framework/viper"
+	v "github.com/shenqingawei/framework/viper"
+	"github.com/spf13/viper"
 
 	"strconv"
 )
 
-func ConnectionNacos() (config_client.IConfigClient, error) {
+func ConnectionNacos(path string) (config_client.IConfigClient, error) {
+	err := v.InitViper(path)
+	if err != nil {
+		return nil, err
+	}
+	port := viper.GetString("NacosConfig.Port")
+	host := viper.GetString("NacosConfig.Host")
+
 	clientConfig := constant.ClientConfig{
 		NamespaceId:         "", //we can create multiple clients with different namespaceId to support multiple namespace.When namespace is public, fill in the blank string here.
 		TimeoutMs:           5000,
@@ -20,14 +28,14 @@ func ConnectionNacos() (config_client.IConfigClient, error) {
 		CacheDir:            "/tmp/nacos/cache",
 		LogLevel:            "debug",
 	}
-	port, err := strconv.Atoi(viper.NacosConfig.Port)
+	p, err := strconv.Atoi(port)
 	if err != nil {
 		return nil, err
 	}
 	serverConfigs := []constant.ServerConfig{
 		{
-			IpAddr: viper.NacosConfig.Host,
-			Port:   uint64(port),
+			IpAddr: host,
+			Port:   uint64(p),
 		},
 	}
 	return clients.NewConfigClient(
@@ -37,14 +45,14 @@ func ConnectionNacos() (config_client.IConfigClient, error) {
 		},
 	)
 }
-func InitNaocs() error {
-	c, err := ConnectionNacos()
+func InitNaocs(path string) error {
+	c, err := ConnectionNacos(path)
 	if err != nil {
 		return err
 	}
 	config, err := c.GetConfig(vo.ConfigParam{
-		DataId: viper.NacosConfig.Name,
-		Group:  viper.NacosConfig.Group,
+		DataId: "user",
+		Group:  "DEFAULT_GROUP",
 	})
 	if err != nil {
 		return err

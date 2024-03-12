@@ -4,16 +4,11 @@ import (
 	"github.com/shenqingawei/framework/mysql_"
 	"github.com/shenqingawei/framework/nacos"
 	"github.com/shenqingawei/framework/nacos_listen"
-	"github.com/shenqingawei/framework/viper"
 )
 
-func Init(types ...string) error {
+func Init(viperPath string, types ...string) error {
 	var err error
-	err = viper.InitViper() //todo:viper 配置 nacos
-	if err != nil {
-		return err
-	}
-	err = nacos.InitNaocs() //todo:nacos 配置连接
+	err = nacos.InitNaocs(viperPath) //todo:nacos 配置连接
 	if err != nil {
 		return err
 	}
