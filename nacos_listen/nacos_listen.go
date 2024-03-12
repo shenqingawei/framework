@@ -5,19 +5,18 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"github.com/shenqingawei/framework/mysql_"
 	"github.com/shenqingawei/framework/nacos"
-	"github.com/shenqingawei/framework/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func NacosListen() error {
-	c, err := nacos.ConnectionNacos()
+func NacosListen(path string) error {
+	c, err := nacos.ConnectionNacos(path)
 	if err != nil {
 		return err
 	}
 	return c.ListenConfig(vo.ConfigParam{
-		DataId: viper.NacosConfig.Name,
-		Group:  viper.NacosConfig.Group,
+		DataId: "user",
+		Group:  "DEFAULT_GROUP",
 		OnChange: func(namespace, group, dataId, data string) {
 			db, err := mysql_.Db.DB()
 			if err != nil {
