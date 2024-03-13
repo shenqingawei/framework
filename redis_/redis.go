@@ -1,6 +1,5 @@
 package redis_
 
-import "C"
 import (
 	"context"
 	"fmt"
